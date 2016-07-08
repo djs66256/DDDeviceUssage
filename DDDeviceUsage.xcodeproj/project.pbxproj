@@ -13,6 +13,8 @@
 		BE1116371D2E6788003242CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE1116351D2E6788003242CD /* Main.storyboard */; };
 		BE1116391D2E6788003242CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE1116381D2E6788003242CD /* Assets.xcassets */; };
 		BE11163C1D2E6788003242CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE11163A1D2E6788003242CD /* LaunchScreen.storyboard */; };
+		BE1116461D2E68CB003242CD /* DDDeviceUsageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1116451D2E68CB003242CD /* DDDeviceUsageView.m */; };
+		BE1116491D2E6DDA003242CD /* DDGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1116481D2E6DDA003242CD /* DDGraphView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,10 @@
 		BE1116381D2E6788003242CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE11163B1D2E6788003242CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BE11163D1D2E6788003242CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BE1116441D2E68CB003242CD /* DDDeviceUsageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDeviceUsageView.h; sourceTree = "<group>"; };
+		BE1116451D2E68CB003242CD /* DDDeviceUsageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDeviceUsageView.m; sourceTree = "<group>"; };
+		BE1116471D2E6DDA003242CD /* DDGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDGraphView.h; sourceTree = "<group>"; };
+		BE1116481D2E6DDA003242CD /* DDGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDGraphView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +48,7 @@
 		BE1116201D2E6788003242CD = {
 			isa = PBXGroup;
 			children = (
+				BE1116431D2E67A8003242CD /* Class */,
 				BE11162B1D2E6788003242CD /* DDDeviceUsage */,
 				BE11162A1D2E6788003242CD /* Products */,
 			);
@@ -77,6 +84,17 @@
 				BE11162D1D2E6788003242CD /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BE1116431D2E67A8003242CD /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				BE1116441D2E68CB003242CD /* DDDeviceUsageView.h */,
+				BE1116451D2E68CB003242CD /* DDDeviceUsageView.m */,
+				BE1116471D2E6DDA003242CD /* DDGraphView.h */,
+				BE1116481D2E6DDA003242CD /* DDGraphView.m */,
+			);
+			path = Class;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,7 +168,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE1116341D2E6788003242CD /* ViewController.m in Sources */,
+				BE1116491D2E6DDA003242CD /* DDGraphView.m in Sources */,
 				BE1116311D2E6788003242CD /* AppDelegate.m in Sources */,
+				BE1116461D2E68CB003242CD /* DDDeviceUsageView.m in Sources */,
 				BE11162E1D2E6788003242CD /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

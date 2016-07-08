@@ -7,12 +7,25 @@
 //
 
 #import "ViewController.h"
+#import "DDDeviceUsageView.h"
 
 @interface ViewController ()
+
+@property (strong, nonatomic) DDDeviceUsageView *usageView;
 
 @end
 
 @implementation ViewController
+
+- (void)loadView {
+    [super loadView];
+    
+    _usageView = [[DDDeviceUsageView alloc] initWithFrame:CGRectMake(10, 10, 256, 300)];
+    _usageView.autoresizingMask = UIViewAutoresizingNone;
+//    _usageView.frame = self.view.bounds;
+//    _usageView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    [self.view addSubview:_usageView];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
