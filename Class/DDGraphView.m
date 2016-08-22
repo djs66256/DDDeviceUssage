@@ -25,6 +25,14 @@
         _minValue = _maxValue = 0;
         self.shapeLayer.strokeColor = [UIColor whiteColor].CGColor;
         self.shapeLayer.fillColor = [UIColor clearColor].CGColor;
+        
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 15)];
+        _titleLabel.textAlignment = NSTextAlignmentLeft;
+        _titleLabel.textColor = [UIColor whiteColor];
+        _titleLabel.font = [UIFont systemFontOfSize:12];
+        [self addSubview:_titleLabel];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_titleLabel.superview attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_titleLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_titleLabel.superview attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
     }
     return self;
 }
@@ -39,20 +47,25 @@
         return ;
     }
     
-    CGSize size = {self.frame.size.width, self.frame.size.height-10};
-    UIBezierPath *path = [UIBezierPath new];
-    path.lineWidth = 1;
-    for (int i = index; i<count+index; i++) {
-        CGFloat value = values[i%count];
-        CGPoint point = {size.width - 1*(i-index), size.height * value / (_maxValue - _minValue) + 5};
-        if (i == index) {
-            [path moveToPoint:point];
+    if (self.showGraph) {
+        CGSize size = {self.frame.size.width, self.frame.size.height-10};
+        UIBezierPath *path = [UIBezierPath new];
+        path.lineWidth = 1;
+        for (int i = index; i<count+index; i++) {
+            CGFloat value = values[i%count];
+            CGPoint point = {size.width - 1.f*(i-index)/[UIScreen mainScreen].scale, size.height * value / (_maxValue - _minValue) + 5};
+            if (i == index) {
+                [path moveToPoint:point];
+            }
+            else {
+                [path addLineToPoint:point];
+            }
         }
-        else {
-            [path addLineToPoint:point];
-        }
+        self.shapeLayer.path = path.CGPath;
     }
-    self.shapeLayer.path = path.CGPath;
+    else {
+        self.shapeLayer.path = nil;
+    }
 }
 
 @end

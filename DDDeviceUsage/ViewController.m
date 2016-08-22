@@ -20,11 +20,16 @@
 - (void)loadView {
     [super loadView];
     
-    _usageView = [[DDDeviceUsageView alloc] initWithFrame:CGRectMake(10, 10, 256, 300)];
-    _usageView.autoresizingMask = UIViewAutoresizingNone;
+//    _usageView = [[DDDeviceUsageView alloc] initWithFrame:CGRectMake(10, 10, 256, 300)];
+//    _usageView.autoresizingMask = UIViewAutoresizingNone;
 //    _usageView.frame = self.view.bounds;
 //    _usageView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-    [self.view addSubview:_usageView];
+//    [self.view addSubview:_usageView];
+}
+
+- (IBAction)addSubviewTest:(id)sender {
+    UIWindow *window = self.view.window;
+    [self.view.window addSubview:[[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)]];
 }
 
 - (void)viewDidLoad {

@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "DDDeviceUsageView.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [self.window addSubview:[[DDDeviceUsageView alloc] initWithFrame:CGRectMake(10, 10, 256, 300)]];
+    
     return YES;
 }
 

@@ -10,4 +10,6 @@
 
 @interface DDDeviceUsageView : UIView
 
+@property (assign, nonatomic) BOOL showGraph;
+
 @end

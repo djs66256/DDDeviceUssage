@@ -15,6 +15,7 @@
 		BE11163C1D2E6788003242CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE11163A1D2E6788003242CD /* LaunchScreen.storyboard */; };
 		BE1116461D2E68CB003242CD /* DDDeviceUsageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1116451D2E68CB003242CD /* DDDeviceUsageView.m */; };
 		BE1116491D2E6DDA003242CD /* DDGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1116481D2E6DDA003242CD /* DDGraphView.m */; };
+		BEF6E74B1D3CA304000DACF9 /* DDWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E74A1D3CA304000DACF9 /* DDWindow.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
 		BE1116451D2E68CB003242CD /* DDDeviceUsageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDeviceUsageView.m; sourceTree = "<group>"; };
 		BE1116471D2E6DDA003242CD /* DDGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDGraphView.h; sourceTree = "<group>"; };
 		BE1116481D2E6DDA003242CD /* DDGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDGraphView.m; sourceTree = "<group>"; };
+		BEF6E7491D3CA304000DACF9 /* DDWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDWindow.h; sourceTree = "<group>"; };
+		BEF6E74A1D3CA304000DACF9 /* DDWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDWindow.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +96,8 @@
 				BE1116451D2E68CB003242CD /* DDDeviceUsageView.m */,
 				BE1116471D2E6DDA003242CD /* DDGraphView.h */,
 				BE1116481D2E6DDA003242CD /* DDGraphView.m */,
+				BEF6E7491D3CA304000DACF9 /* DDWindow.h */,
+				BEF6E74A1D3CA304000DACF9 /* DDWindow.m */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -128,6 +133,7 @@
 				TargetAttributes = {
 					BE1116281D2E6788003242CD = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = WR3V9SUWKN;
 					};
 				};
 			};
@@ -170,6 +176,7 @@
 				BE1116341D2E6788003242CD /* ViewController.m in Sources */,
 				BE1116491D2E6DDA003242CD /* DDGraphView.m in Sources */,
 				BE1116311D2E6788003242CD /* AppDelegate.m in Sources */,
+				BEF6E74B1D3CA304000DACF9 /* DDWindow.m in Sources */,
 				BE1116461D2E68CB003242CD /* DDDeviceUsageView.m in Sources */,
 				BE11162E1D2E6788003242CD /* main.m in Sources */,
 			);
@@ -234,7 +241,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -272,7 +279,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -283,10 +290,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = DDDeviceUsage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.daniel.DDDeviceUsage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -294,10 +304,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = DDDeviceUsage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.daniel.DDDeviceUsage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -320,6 +333,7 @@
 				BE1116421D2E6788003242CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

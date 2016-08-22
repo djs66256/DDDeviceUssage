@@ -9,11 +9,12 @@
 #import <QuartzCore/QuartzCore.h>
 #import <sys/sysctl.h>
 #import <mach/mach.h>
+#import <objc/runtime.h>
 
 #import "DDDeviceUsageView.h"
 #import "DDGraphView.h"
 
-#define kMaxValueCount 256
+#define kMaxValueCount ((int)(256*[UIScreen mainScreen].scale))
 #define kGraphCount 4
 
 @implementation DDDeviceUsageView {
@@ -23,9 +24,16 @@
     CGFloat *_cpuValues;
     int _cursor;
     CADisplayLink *_displayLink;
+    NSTimer *_refreshTimer;
     
     NSArray<DDGraphView *> *_graphViews;
     NSArray<UILabel *> *_graphLabels;
+}
+
+- (void)dealloc
+{
+    [_displayLink invalidate];
+    [_refreshTimer invalidate];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -38,8 +46,8 @@
         DDGraphView *preGraphView = nil;
         for (int i = 0; i<kGraphCount; i++) {
             DDGraphView *graphView = [[DDGraphView alloc] initWithFrame:self.bounds];
-            graphView.layer.borderColor = [UIColor blackColor].CGColor;
-            graphView.layer.borderWidth = 1;
+            graphView.layer.borderColor = [UIColor darkGrayColor].CGColor;
+            graphView.layer.borderWidth = 1/[UIScreen mainScreen].scale;
             if (i==1 || i==2) {
                 graphView.autoRange = YES;
             }
@@ -50,7 +58,7 @@
             [self addSubview:graphView];
             [graphViews addObject:graphView];
             
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:graphView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:1 constant:kMaxValueCount]];
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:graphView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
             [self addConstraint:[NSLayoutConstraint constraintWithItem:graphView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
             
             if (preGraphView) {
@@ -69,6 +77,11 @@
         _graphViews = graphViews.copy;
         
         
+        _graphViews[0].title = @"FPS";
+        _graphViews[1].title = @"MEM";
+        _graphViews[2].title = @"-MEM";
+        _graphViews[3].title = @"CPU";
+        
         _fpsValues = (CGFloat *)malloc(sizeof(CGFloat)*kMaxValueCount);
         memset(_fpsValues, 0, kMaxValueCount);
         _memUsageValues = (CGFloat *)malloc(sizeof(CGFloat)*kMaxValueCount);
@@ -80,11 +93,21 @@
         
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLink:)];
         [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+        
+        _refreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateValues) userInfo:nil repeats:YES];
+        
+        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureHandler:)];
+        [self addGestureRecognizer:pan];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler:)];
+        tap.numberOfTapsRequired = 3;
+        [self addGestureRecognizer:tap];
+        
+        [self updateFrameWithAnimated:NO];
     }
     return self;
 }
-                        
-                        
+
 - (void)displayLink:(CADisplayLink *)link {
     _fpsValues[_cursor] = 1/link.duration;
     _memUsageValues[_cursor] = [self usedMemory];
@@ -100,6 +123,67 @@
     _cursor %= kMaxValueCount;
 }
 
+- (void)updateValues {
+    int index = _cursor - 1;
+    if (index < 0) {
+        index = kMaxValueCount - 1;
+    }
+    _graphViews[0].titleLabel.text = [NSString stringWithFormat:@"FPS: %.2f", _fpsValues[index]];
+    _graphViews[1].titleLabel.text = [NSString stringWithFormat:@"MEM: %.2f", _memUsageValues[index]];
+    _graphViews[2].titleLabel.text = [NSString stringWithFormat:@"-MEM: %.2f", _memLeftValues[index]];
+    _graphViews[3].titleLabel.text = [NSString stringWithFormat:@"CPU: %.2f%%", _cpuValues[index]];
+}
+
+- (void)setShowGraph:(BOOL)showGraph {
+    if (_showGraph != showGraph) {
+        _showGraph = showGraph;
+        for (DDGraphView *view in _graphViews) {
+            view.showGraph = showGraph;
+        }
+        
+        [self updateFrameWithAnimated:YES];
+    }
+}
+
+- (void)updateFrameWithAnimated:(BOOL)animated {
+    if (animated) {
+        if (kCFCoreFoundationVersionNumber < kCFCoreFoundationVersionNumber_iOS_7_0) {
+            [UIView animateWithDuration:0.3 animations:^{
+                [self updateFrameWithAnimated:NO];
+                [self layoutIfNeeded];
+            }];
+        }
+        else {
+            [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:10 options:UIViewAnimationOptionLayoutSubviews animations:^{
+                [self updateFrameWithAnimated:NO];
+                [self layoutIfNeeded];
+            } completion:NULL];
+        }
+    }
+    else {
+        CGSize size = self.showGraph ? CGSizeMake(kMaxValueCount/[UIScreen mainScreen].scale, 50*kGraphCount) : CGSizeMake(100, 15*kGraphCount);
+        CGSize originSize = self.frame.size;
+        self.frame = CGRectMake(self.frame.origin.x + (originSize.width - size.width) / 2,
+                                self.frame.origin.y + (originSize.height - size.height) / 2,
+                                size.width, size.height);
+    }
+}
+
+- (void)tapGestureHandler:(UITapGestureRecognizer *)gesture {
+    self.showGraph = !self.showGraph;
+}
+
+- (void)panGestureHandler:(UIPanGestureRecognizer *)gesture {
+    CGPoint point = [gesture translationInView:self];
+    [gesture setTranslation:CGPointZero inView:self];
+    CGRect rect = {
+        .origin = { self.frame.origin.x + point.x, self.frame.origin.y + point.y },
+        .size = self.frame.size
+    };
+    if (CGRectContainsPoint(self.superview.bounds, CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect)))) {
+        self.frame = rect;
+    }
+}
 
 // 获取当前设备可用内存(单位：MB）
 
